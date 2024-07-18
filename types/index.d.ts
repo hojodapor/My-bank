@@ -33,6 +33,7 @@ declare type User = {
   dwollaCustomerId: string;
   firstName: string;
   lastName: string;
+  name: string;
   address1: string;
   city: string;
   state: string;
@@ -155,7 +156,7 @@ declare interface HeaderBoxProps {
   user?: string;
 }
 
-declare interface  MobileNavProps {
+declare interface MobileNavProps {
   user: User;
 }
 
