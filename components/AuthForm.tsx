@@ -4,16 +4,26 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 
-import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Form, FormMessage } from "@/components/ui/form";
-
-import CustomInput from "./CustomInput";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+
+import PlaidLink from "./PlaidLink";
 import { signIn, signUp } from "@/actions/user.action";
 
 const AuthForm = ({ type }: { type: string }) => {
@@ -39,13 +49,26 @@ const AuthForm = ({ type }: { type: string }) => {
     try {
       // Sign up with Appwrite & create plaid token
 
-      if (type === "Signup") {
-        const newUser = await signUp(data);
+      if (type === "sign-up") {
+        const userData = {
+          firstName: data.firstName!,
+          lastName: data.lastName!,
+          address1: data.address1!,
+          city: data.city!,
+          state: data.state!,
+          postalCode: data.postalCode!,
+          dateOfBirth: data.dateOfBirth!,
+          ssn: data.ssn!,
+          email: data.email,
+          password: data.password,
+        };
+
+        const newUser = await signUp(userData);
 
         setUser(newUser);
       }
 
-      if (type === "Signin") {
+      if (type === "sign-in") {
         const response = await signIn({
           email: data.email,
           password: data.password,
@@ -87,12 +110,14 @@ const AuthForm = ({ type }: { type: string }) => {
         </div>
       </header>
       {user ? (
-        <div className="flex flex-col gap-4">{/* PlaidLink */}</div>
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant="primary" />
+        </div>
       ) : (
         <>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              {type === "Signup" && (
+              {type === "sign-up" && (
                 <>
                   <div className="flex gap-4">
                     <CustomInput
@@ -172,7 +197,7 @@ const AuthForm = ({ type }: { type: string }) => {
                       <Loader2 size={20} className="animate-spin" /> &nbsp;
                       Loading...
                     </>
-                  ) : type === "Signin" ? (
+                  ) : type === "sign-in" ? (
                     "Sign In"
                   ) : (
                     "Sign Up"
@@ -184,15 +209,15 @@ const AuthForm = ({ type }: { type: string }) => {
 
           <footer className="flex justify-center gap-1">
             <p className="text-14 font-normal text-gray-600">
-              {type === "Signin"
+              {type === "sign-in"
                 ? "Don't have an account?"
                 : "Already have an account?"}
             </p>
             <Link
-              href={type === "Signin" ? "/Signup" : "/Signin"}
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
               className="form-link"
             >
-              {type === "Signin" ? "Sign up" : "Sign in"}
+              {type === "sign-in" ? "Sign up" : "Sign in"}
             </Link>
           </footer>
         </>
