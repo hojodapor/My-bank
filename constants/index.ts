@@ -19,6 +19,12 @@ export const sidebarLinks = [
     route: "/payment-transfer",
     label: "Transfer Funds",
   },
+  {
+    // cryptoicon.svg
+    imgURL: "/icons/cryptoicon.svg",
+    route: "/cryptocurrency-wallet",
+    label: "Cryptocurrency Wallet",
+  },
 ];
 
 // good_user / good_password - Bank of America

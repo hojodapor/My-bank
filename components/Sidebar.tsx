@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Footer from "./Footer";
+import PlaidLink from "./PlaidLink";
 
 const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
@@ -21,7 +22,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             alt="Horizon logo"
             className="size-[24px] max-xl:size-14"
           />
-          <h1 className="sidebar-logo">Horizon</h1>
+          <h1 className="sidebar-logo">BARL</h1>
         </Link>
         {sidebarLinks.map((item) => {
           const isActive =
@@ -49,7 +50,7 @@ const Sidebar = ({ user }: SidebarProps) => {
             </Link>
           );
         })}
-        USER
+        <PlaidLink user={user} />
       </nav>
 
       <Footer user={user} />
